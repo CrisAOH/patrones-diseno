@@ -24,3 +24,130 @@
  * de la atracción como del tipo de visitante,
  * sin modificar las clases originales.
  */
+
+interface Visitor {
+  visitRollerCoaster(rollerCoaster: RollerCoaster): void;
+  visitHauntedHouse(hauntedHouse: HauntedHouse): void;
+  visitFerrisWheel(ferrisWheel: FerrisWheel): void;
+}
+
+interface Attraction {
+  accept(visitor: Visitor): void;
+  getPrice(): number;
+}
+
+class RollerCoaster implements Attraction {
+  private price: number = 50;
+
+  getPrice(): number {
+    return this.price;
+  }
+
+  accept(visitor: Visitor): void {
+    visitor.visitRollerCoaster(this);
+  }
+}
+
+class HauntedHouse implements Attraction {
+  private price: number = 40;
+
+  getPrice(): number {
+    return this.price;
+  }
+
+  accept(visitor: Visitor): void {
+    visitor.visitHauntedHouse(this);
+  }
+}
+
+class FerrisWheel implements Attraction {
+  private price: number = 30;
+
+  getPrice(): number {
+    return this.price;
+  }
+
+  accept(visitor: Visitor): void {
+    visitor.visitFerrisWheel(this);
+  }
+}
+
+class ChildVisitor implements Visitor {
+  visitRollerCoaster(rollerCoaster: RollerCoaster): void {
+    console.log(
+      `Niño en Montaña Rusa: Precio con descuento de ${rollerCoaster.getPrice() * 0.5}`,
+    );
+  }
+
+  visitHauntedHouse(hauntedHouse: HauntedHouse): void {
+    console.log(
+      `Niño en Casa del Terror: Precio con descuento de ${hauntedHouse.getPrice() * 0.7}`,
+    );
+  }
+
+  visitFerrisWheel(ferrisWheel: FerrisWheel): void {
+    console.log(
+      `Niño en la Rueda de la Fortuna: Precio con descuento de ${ferrisWheel.getPrice() * 0.6}`,
+    );
+  }
+}
+
+class AdultVisitor implements Visitor {
+  visitRollerCoaster(rollerCoaster: RollerCoaster): void {
+    console.log(
+      `Adulto en Montaña Rusa: Precio de ${rollerCoaster.getPrice()}`,
+    );
+  }
+
+  visitHauntedHouse(hauntedHouse: HauntedHouse): void {
+    console.log(
+      `Adulto en Casa del Terror: Precio de ${hauntedHouse.getPrice()}`,
+    );
+  }
+
+  visitFerrisWheel(ferrisWheel: FerrisWheel): void {
+    console.log(
+      `Adulto en la Rueda de la Fortuna: Precio de ${ferrisWheel.getPrice()}`,
+    );
+  }
+}
+
+class SeniorVisitor implements Visitor {
+  visitRollerCoaster(rollerCoaster: RollerCoaster): void {
+    console.log(
+      `Adulto Mayor en Montaña Rusa: Precio con descuento de ${rollerCoaster.getPrice() * 0.85}`,
+    );
+  }
+
+  visitHauntedHouse(hauntedHouse: HauntedHouse): void {
+    console.log(
+      `Adulto Mayor en Casa del Terror: Precio con descuento de ${hauntedHouse.getPrice() * 0.85}`,
+    );
+  }
+
+  visitFerrisWheel(ferrisWheel: FerrisWheel): void {
+    console.log(
+      `Adulto Mayor en la Rueda de la Fortuna: Precio con descuento de ${ferrisWheel.getPrice() * 0.85}`,
+    );
+  }
+}
+
+function main() {
+  const attractions: Attraction[] = [
+    new RollerCoaster(),
+    new HauntedHouse(),
+    new FerrisWheel(),
+  ];
+
+  attractions.forEach((attraction) => console.log(`${attraction.getPrice()}`));
+
+  console.log("Visitante Niño");
+  const childVisitor = new ChildVisitor();
+  attractions.forEach((attraction) => attraction.accept(childVisitor));
+
+  console.log("Visitante Adulto");
+  const adultVisitor = new ChildVisitor();
+  attractions.forEach((attraction) => attraction.accept(adultVisitor));
+}
+
+main();
